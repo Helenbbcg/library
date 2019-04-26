@@ -58,7 +58,7 @@ void libgetuser()
 		return;
 	}
 	int i = 0;//number of borrowing book
-	User* work = huser;//work pointer
+	User* work = huser;//working pointer
 	User* user_new = NULL;
 	while (!feof(fd))
 	{
@@ -66,10 +66,11 @@ void libgetuser()
 		user_new = (User*)malloc(UserLen);
 		memset(user_new, 0, UserLen);
 		fscanf(fd, "%s%s", user_new->name, user_new->password);
-		//读取借书内容
+		//Read the borrowing information 
 		while (!feof(fd))
 		{
-			char* temp = (char*)malloc(bookId_max);
+			char* temp = (char*)malloc(bookId_max);//Allocate memory for book ID
+			memset(temp, 0, bookId_max);
 			fscanf(fd, "%s", temp);
 			if (libstrcmp(temp, "****"))
 			{
@@ -82,7 +83,7 @@ void libgetuser()
 			}	
 			i++;
 		}
-		if (*user_new->name == '\0' || *user_new->password == '\0')//防止读到一个空白字符串
+		if (*user_new->name == '\0' || *user_new->password == '\0')
 		{
 			free(user_new);
 		}
@@ -105,8 +106,8 @@ void libgetbook()
 		return;
 	}
 	int i = 0;
-	Book* work = hbook;//work pointer
-	Book* book_new = NULL;//node pointer
+	Book* work = hbook;
+	Book* book_new = NULL;
 	while (!feof(fd))
 	{
 		book_new = (Book*)malloc(BookLen);
@@ -169,8 +170,10 @@ void libputuser(int is_change, User* user)
 }
 
 //Write into book data
-void libputbook(int is_del, Book* book)	//第一个参数表示书籍信息是否被改动或者删除，如果是，就要重新全部载入文件
-{										//否则就需要添加数据即可
+void libputbook(int is_del, Book* book)	//The first parameter indicates whether the book information has been changed or deleted
+//If so, reload the entire file
+//Otherwise, reload the file
+{										
 	FILE* fd;
 	Book* w = hbook;
 	if (is_del)
